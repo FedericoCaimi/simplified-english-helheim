@@ -13,11 +13,11 @@ using Exceptions;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("course")]
-    public class CourseController : ControllerBase
+    [Route("section")]
+    public class SectionController : ControllerBase
     {
-        private ICourseLogic LogicService;
-        public CourseController(ICourseLogic service) : base()
+        private ISectionLogic LogicService;
+        public SectionController(ISectionLogic service) : base()
         {
             this.LogicService = service;
         }
@@ -30,9 +30,9 @@ namespace WebApi.Controllers
         {
             try
             {
-                List<Course> courseList = this.LogicService.GetAll().ToList(); ;
-                List<CourseOut> courseListOut = courseList.ConvertAll(a => new CourseOut(a));
-                return Ok(courseListOut);
+                List<Section> sectionList = this.LogicService.GetAll().ToList(); ;
+                List<SectionOut> sectionListOut = sectionList.ConvertAll(a => new SectionOut(a));
+                return Ok(sectionListOut);
             }
             catch (Exception)
             {
@@ -44,14 +44,14 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Post([FromBody] CourseIn courseIn)
+        public IActionResult Post([FromBody] SectionIn sectionIn)
         {
             //Course createdCourse = this.LogicService.Create(courseIn.ToEntity());
             //return CreatedAtRoute("GetCourse", new { id = createdCourse.Id }, createdCourse.Id);
             try
             {
-                Course createdCourse = this.LogicService.Create(courseIn.ToEntity());
-                return Created("GetCourse", new CourseOut(createdCourse));
+                Section createdSection = this.LogicService.Create(sectionIn.ToEntity());
+                return Created("GetSection", new SectionOut(createdSection));
             }
             catch (BadArgumentException e)
             {
@@ -72,13 +72,13 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Put([FromQuery(Name = "id")] int id, [FromBody] CourseIn courseIn)
+        public IActionResult Put([FromQuery(Name = "id")] int id, [FromBody] SectionIn sectionIn)
 
         {
             try
             {
-                courseIn.Id = id;
-                return Ok(new CourseOut(this.LogicService.Update(id, courseIn.ToEntity())));
+                sectionIn.Id = id;
+                return Ok(new SectionOut(this.LogicService.Update(id, sectionIn.ToEntity())));
             }
             catch (BadArgumentException e)
             {

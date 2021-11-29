@@ -1,7 +1,7 @@
 ﻿using BusinessLogic.Interface;
 using DataAccess.Interface;
 using Domain;
-//using Exceptions;
+using Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,33 +11,39 @@ namespace BusinessLogic
 {
     public class CourseLogic : ICourseLogic
     {
-        private IRepository<Course> Repository;
-
-        public CourseLogic(IRepository<Course> repository)
+        //private IRepository<Course> Repository;
+        private ICourseRepository Repository;
+        public CourseLogic(ICourseRepository repository)
         {
             this.Repository = repository;
         }
 
         public Course Create(Course course)
         {
-            Course newCourse = new Course()
-            {
-                Name = course.Name,
-                Description = course.Description
-            };
-            Repository.Add(newCourse);
-            Repository.Save();
-            return newCourse;
+            bool exists = Repository.Exists(course.Name);
+            if(!exists){
+                Course newCourse = new Course()
+                {
+                    Name = course.Name,
+                    Description = course.Description
+                };
+                Repository.Add(newCourse);
+                Repository.Save();
+                return newCourse;
+            }
+            else{
+                throw new DBNamelreadyExistsException();
+            }
         }
 
-        public void Remove(Guid id)
+        public void Remove(int id)
         {
             Course courseFinded = Repository.Get(id);
             Repository.Remove(courseFinded);
             Repository.Save();
         }
 
-        public Course Update(Guid id, Course course)
+        public Course Update(int id, Course course)
         {
             //if (id != course.Id) throw new IncorrectParamException("Id and object id doesnt match");
 
@@ -51,7 +57,7 @@ namespace BusinessLogic
             return course;
         }
 
-        public Course Get(Guid id)
+        public Course Get(int id)
         {
             return Repository.Get(id);
         }

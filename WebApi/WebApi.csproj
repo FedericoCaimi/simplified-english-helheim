@@ -6,6 +6,7 @@
     <ProjectReference Include="..\DataAccess.Interface\DataAccess.Interface.csproj" />
     <ProjectReference Include="..\BusinessLogic.Interface\BusinessLogic.Interface.csproj" />
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
+    <ProjectReference Include="..\Exceptions\Exceptions.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

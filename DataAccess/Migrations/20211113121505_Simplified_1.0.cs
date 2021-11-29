@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using MySql.EntityFrameworkCore.Metadata;
 
 namespace DataAccess.Migrations
 {
@@ -11,7 +11,8 @@ namespace DataAccess.Migrations
                 name: "Course",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(type: "varbinary(16)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
@@ -25,7 +26,8 @@ namespace DataAccess.Migrations
                 name: "Section",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(type: "varbinary(16)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
@@ -39,7 +41,8 @@ namespace DataAccess.Migrations
                 name: "Skill",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(type: "varbinary(16)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
@@ -53,10 +56,11 @@ namespace DataAccess.Migrations
                 name: "Exercise",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(type: "varbinary(16)", nullable: false),
-                    CourseId = table.Column<byte[]>(type: "varbinary(16)", nullable: true),
-                    SectionId = table.Column<byte[]>(type: "varbinary(16)", nullable: true),
-                    SkillId = table.Column<byte[]>(type: "varbinary(16)", nullable: true),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CourseId = table.Column<int>(type: "int", nullable: true),
+                    SectionId = table.Column<int>(type: "int", nullable: true),
+                    SkillId = table.Column<int>(type: "int", nullable: true),
                     Title = table.Column<string>(type: "text", nullable: true),
                     Text = table.Column<string>(type: "text", nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
@@ -88,7 +92,8 @@ namespace DataAccess.Migrations
                 name: "ExerciseMulipeChoise",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(type: "varbinary(16)", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn)
                 },
                 constraints: table =>
                 {
@@ -105,9 +110,10 @@ namespace DataAccess.Migrations
                 name: "Question",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(type: "varbinary(16)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Text = table.Column<string>(type: "text", nullable: true),
-                    ExerciseMulipeChoiseId = table.Column<byte[]>(type: "varbinary(16)", nullable: true),
+                    ExerciseMulipeChoiseId = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
@@ -125,10 +131,11 @@ namespace DataAccess.Migrations
                 name: "Option",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(type: "varbinary(16)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Text = table.Column<string>(type: "text", nullable: true),
                     IsCorrect = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    QuestionId = table.Column<byte[]>(type: "varbinary(16)", nullable: true),
+                    QuestionId = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>

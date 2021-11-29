@@ -32,12 +32,14 @@ namespace WebApi
             var database = Configuration["Database"] ?? "Simplified";
 
             services.AddControllers();
+            //services.AddControllers().AddNewtonsoftJson();
             services.AddDbContext<DbContext,Context>(options => 
                 options.UseMySQL($"server={server},{port};database={database};user={user};password={password};")
             );
 
             // DataAccess interfaces
-            services.AddScoped<IRepository<Course>, CourseRepository>();
+            //services.AddScoped<IRepository<Course>, CourseRepository>();
+            services.AddScoped<ICourseRepository, CourseRepository>();
 
             // BusinessLogic interfaces
             services.AddScoped<ICourseLogic, CourseLogic>();

@@ -2,17 +2,17 @@ using Domain;
 
 namespace WebApi.Models
 {
-    public class CourseOut
+    public class SectionOut
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public CourseOut(Course course)
+        public SectionOut(Section section)
         {
-            Id = course.Id;
-            Name = course.Name;
-            Description = course.Description;
+            Id = section.Id;
+            Name = section.Name;
+            Description = section.Description;
         }
 
     }

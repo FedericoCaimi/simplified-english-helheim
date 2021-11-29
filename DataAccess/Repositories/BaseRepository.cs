@@ -23,8 +23,9 @@ namespace DataAccess
         public virtual void Remove(T entity)
         {
             //if (!exists(entity.Id)) throw new DBKeyNotFoundException();
-            entity.IsDeleted = true;
-            Context.Entry(entity).State = EntityState.Modified;
+            Context.Set<T>().Remove(entity);
+            //entity.IsDeleted = true;
+            //Context.Entry(entity).State = EntityState.Modified;
         }
 
         public virtual void Update(T entity)
@@ -38,7 +39,7 @@ namespace DataAccess
             return Context.Set<T>();
         }
 
-        public virtual T Get(Guid id)
+        public virtual T Get(int id)
         {
             //if (!exists(id)) throw new DBKeyNotFoundException();
             return Context.Set<T>().FirstOrDefault(x => x.Id == id);
@@ -49,7 +50,7 @@ namespace DataAccess
             Context.SaveChanges();
         }
 
-        protected virtual bool exists(Guid id)
+        protected virtual bool exists(int id)
         {
             return Context.Set<T>().FirstOrDefault(x => x.Id == id) != null;
         }

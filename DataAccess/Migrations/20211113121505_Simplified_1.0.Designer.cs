@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20211101063422_Simplified_1.0")]
+    [Migration("20211113121505_Simplified_1.0")]
     partial class Simplified_10
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,9 +21,9 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.Course", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varbinary(16)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -41,21 +41,21 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.Exercise", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varbinary(16)");
+                        .HasColumnType("int");
 
-                    b.Property<byte[]>("CourseId")
-                        .HasColumnType("varbinary(16)");
+                    b.Property<int?>("CourseId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<byte[]>("SectionId")
-                        .HasColumnType("varbinary(16)");
+                    b.Property<int?>("SectionId")
+                        .HasColumnType("int");
 
-                    b.Property<byte[]>("SkillId")
-                        .HasColumnType("varbinary(16)");
+                    b.Property<int?>("SkillId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Text")
                         .HasColumnType("text");
@@ -76,9 +76,9 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.Option", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varbinary(16)");
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("tinyint(1)");
@@ -86,8 +86,8 @@ namespace DataAccess.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<byte[]>("QuestionId")
-                        .HasColumnType("varbinary(16)");
+                    b.Property<int?>("QuestionId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Text")
                         .HasColumnType("text");
@@ -101,12 +101,12 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.Question", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varbinary(16)");
+                        .HasColumnType("int");
 
-                    b.Property<byte[]>("ExerciseMulipeChoiseId")
-                        .HasColumnType("varbinary(16)");
+                    b.Property<int?>("ExerciseMulipeChoiseId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
@@ -123,9 +123,9 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.Section", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varbinary(16)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -143,9 +143,9 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.Skill", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varbinary(16)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");

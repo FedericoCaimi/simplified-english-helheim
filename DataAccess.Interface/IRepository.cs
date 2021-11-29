@@ -13,7 +13,7 @@ namespace DataAccess.Interface
 
         IEnumerable<T> GetAll();
 
-        T Get(Guid id);
+        T Get(int id);
 
         void Save();
 
