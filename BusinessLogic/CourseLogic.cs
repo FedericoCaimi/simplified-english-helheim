@@ -45,7 +45,7 @@ namespace BusinessLogic
 
         public Course Update(int id, Course course)
         {
-            //if (id != course.Id) throw new IncorrectParamException("Id and object id doesnt match");
+            if (id != course.Id) throw new IncorrectParamException("Id and object id doesnt match");
 
             Course courseToUpdate = this.Repository.Get(id);
 

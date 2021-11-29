@@ -40,9 +40,11 @@ namespace WebApi
             // DataAccess interfaces
             //services.AddScoped<IRepository<Course>, CourseRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<ISectionRepository, SectionRepository>();
 
             // BusinessLogic interfaces
             services.AddScoped<ICourseLogic, CourseLogic>();
+            services.AddScoped<ISectionLogic, SectionLogic>();
 
             services.AddSingleton<IConfiguration>(Configuration);
 
