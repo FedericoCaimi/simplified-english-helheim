@@ -2,33 +2,31 @@
 using DataAccess.Interface;
 using Domain;
 using Exceptions;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 
 namespace BusinessLogic
 {
-    public class SectionLogic : ISectionLogic
+    public class SkillLogic : ISkillLogic
     {
-        private ISectionRepository Repository;
-        public SectionLogic(ISectionRepository repository)
+        private ISkillRepository Repository;
+        public SkillLogic(ISkillRepository repository)
         {
             this.Repository = repository;
         }
 
-        public Section Create(Section section)
+        public Skill Create(Skill skill)
         {
-            bool exists = Repository.Exists(section.Name);
+            bool exists = Repository.Exists(skill.Name);
             if(!exists){
-                Section newSection = new Section()
+                Skill newSkill = new Skill()
                 {
-                    Name = section.Name,
-                    Description = section.Description
+                    Name = skill.Name,
+                    Description = skill.Description
                 };
-                Repository.Add(newSection);
+                Repository.Add(newSkill);
                 Repository.Save();
-                return newSection;
+                return newSkill;
             }
             else{
                 throw new DBNamelreadyExistsException();
@@ -37,31 +35,31 @@ namespace BusinessLogic
 
         public void Remove(int id)
         {
-            Section sectionFinded = Repository.Get(id);
-            Repository.Remove(sectionFinded);
+            Skill skillFinded = Repository.Get(id);
+            Repository.Remove(skillFinded);
             Repository.Save();
         }
 
-        public Section Update(int id, Section section)
+        public Skill Update(int id, Skill skill)
         {
-            if (id != section.Id) throw new IncorrectParamException("Id and object id doesnt match");
+            if (id != skill.Id) throw new IncorrectParamException("Id and object id doesnt match");
 
-            Section sectionToUpdate = this.Repository.Get(id);
+            Skill skillToUpdate = this.Repository.Get(id);
 
-            sectionToUpdate.Name = section.Name;
-            sectionToUpdate.Description = section.Description;
+            skillToUpdate.Name = skill.Name;
+            skillToUpdate.Description = skill.Description;
 
-            Repository.Update(sectionToUpdate);
+            Repository.Update(skillToUpdate);
             Repository.Save();
-            return section;
+            return skill;
         }
 
-        public Section Get(int id)
+        public Skill Get(int id)
         {
             return Repository.Get(id);
         }
 
-        public IEnumerable<Section> GetAll() => Repository.GetAll();
+        public IEnumerable<Skill> GetAll() => Repository.GetAll();
 
     }
 }
