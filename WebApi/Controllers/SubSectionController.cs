@@ -13,13 +13,13 @@ using Exceptions;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("course")]
-    public class CourseController : ControllerBase
+    [Route("subSection")]
+    public class SubSectionController : ControllerBase
     {
-        private ICourseLogic LogicService;
-        public CourseController(ICourseLogic service) : base()
+        private ISubSectionLogic LogicService;
+        public SubSectionController(ISubSectionLogic subSection) : base()
         {
-            this.LogicService = service;
+            this.LogicService = subSection;
         }
 
         //[ServiceFilter(typeof(AuthenticationFilter))]
@@ -30,9 +30,9 @@ namespace WebApi.Controllers
         {
             try
             {
-                List<Course> courseList = this.LogicService.GetAll().ToList(); ;
-                List<CourseOut> courseListOut = courseList.ConvertAll(a => new CourseOut(a));
-                return Ok(courseListOut);
+                List<SubSection> subSectionList = this.LogicService.GetAll().ToList(); ;
+                List<SubSectionOut> subSectionListOut = subSectionList.ConvertAll(a => new SubSectionOut(a));
+                return Ok(subSectionListOut);
             }
             catch (Exception)
             {
@@ -44,22 +44,24 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Post([FromBody] CourseIn courseIn)
+        public IActionResult Post([FromBody] SubSectionIn subSectionIn)
         {
-            //Course createdCourse = this.LogicService.Create(courseIn.ToEntity());
-            //return CreatedAtRoute("GetCourse", new { id = createdCourse.Id }, createdCourse.Id);
             try
             {
-                Course createdCourse = this.LogicService.Create(courseIn.ToEntity());
-                return Created("GetCourse", new CourseOut(createdCourse));
+                SubSection createdSubSection = this.LogicService.Create(subSectionIn.ToEntity());
+                return Created("GetSubSection", new SubSectionOut(createdSubSection));
             }
             catch (BadArgumentException e)
             {
-                return BadRequest( new{message = e.Message} );
+                return BadRequest( new{message =  new{message = e.Message} } );
             }
             catch (AlreadyExistsException e)
             {
-                return Conflict( new{message = e.Message} );
+                return Conflict( new{message =  new{message = e.Message} } );
+            }
+            catch (NotFoundException e)
+            {
+                return NotFound( new{message =  new{message = e.Message} } );
             }
             catch (Exception)
             {
@@ -72,21 +74,21 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Put([FromQuery(Name = "id")] int id, [FromBody] CourseIn courseIn)
+        public IActionResult Put([FromQuery(Name = "id")] int id, [FromBody] SubSectionIn subSectionIn)
 
         {
             try
             {
-                courseIn.Id = id;
-                return Ok(new CourseOut(this.LogicService.Update(id, courseIn.ToEntity())));
+                subSectionIn.Id = id;
+                return Ok(new SubSectionOut(this.LogicService.Update(id, subSectionIn.ToEntity())));
             }
             catch (BadArgumentException e)
             {
-                return BadRequest( new{message = e.Message} );
+                return BadRequest( new{message =  new{message = e.Message} } );
             }
             catch (NotFoundException e)
             {
-                return NotFound( new{message = e.Message} );
+                return NotFound( new{message =  new{message = e.Message} } );
             }
             catch (Exception)
             {

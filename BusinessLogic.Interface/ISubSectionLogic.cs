@@ -2,7 +2,7 @@ using Domain;
 
 namespace BusinessLogic.Interface
 {
-    public interface ICourseLogic : ICrud<Course>
+    public interface ISubSectionLogic : ICrud<SubSection>
     {
     }
 }

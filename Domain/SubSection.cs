@@ -3,17 +3,18 @@ using System.Collections.Generic;
 
 namespace Domain
 {
-    public class Skill : DomainEntity
+    public class SubSection : DomainEntity
     {
         public string Name {get; set; }
         public string Description { get; set; }
+        public Section Section {get; set; }
 
 
         public override bool Equals(object obj)
         {
-            var skill = obj as Skill;
-            return skill != null &&
-                   Name == skill.Name;
+            var subSection = obj as SubSection;
+            return subSection != null &&
+                   Name == subSection.Name;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using DataAccess.Interface;
 using Domain;
-//using Exceptions;
+using Exceptions;
 using System.Linq;
 
 
@@ -16,13 +16,13 @@ namespace DataAccess
 
         public virtual void Add(T entity)
         {
-            //if (exists(entity.Id)) throw new DBKeyAlreadyExistsException();
+            if (exists(entity.Id)) throw new DBKeyAlreadyExistsException();
             Context.Set<T>().Add(entity);
         }
 
         public virtual void Remove(T entity)
         {
-            //if (!exists(entity.Id)) throw new DBKeyNotFoundException();
+            if (!exists(entity.Id)) throw new DBKeyNotFoundException();
             Context.Set<T>().Remove(entity);
             //entity.IsDeleted = true;
             //Context.Entry(entity).State = EntityState.Modified;
@@ -30,7 +30,7 @@ namespace DataAccess
 
         public virtual void Update(T entity)
         {
-            //if (!exists(entity.Id)) throw new DBKeyNotFoundException();
+            if (!exists(entity.Id)) throw new DBKeyNotFoundException();
             Context.Entry(entity).State = EntityState.Modified;
         }
 
@@ -41,7 +41,7 @@ namespace DataAccess
 
         public virtual T Get(int id)
         {
-            //if (!exists(id)) throw new DBKeyNotFoundException();
+            if (!exists(id)) throw new DBKeyNotFoundException();
             return Context.Set<T>().FirstOrDefault(x => x.Id == id);
         }
 

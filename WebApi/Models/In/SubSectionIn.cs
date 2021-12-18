@@ -4,22 +4,24 @@ using Domain;
 
 namespace WebApi.Models
 {
-    public class SkillIn
+    public class SubSectionIn
     {
         //public Guid Id { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public Section Section {get; set; }
 
-        public SkillIn()
+        public SubSectionIn()
         {
         }
 
-        public Skill ToEntity() => new Skill()
+        public SubSection ToEntity() => new SubSection()
         {
             Id = this.Id,
             Name = this.Name,
-            Description = this.Description
+            Description = this.Description,
+            Section = this.Section
         };
 
     }

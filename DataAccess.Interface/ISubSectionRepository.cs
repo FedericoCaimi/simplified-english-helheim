@@ -2,7 +2,7 @@
 
 namespace DataAccess.Interface
 {
-    public interface ISkillRepository : IRepository<Skill>
+    public interface ISubSectionRepository : IRepository<SubSection>
     {
          bool Exists(string name);
     }

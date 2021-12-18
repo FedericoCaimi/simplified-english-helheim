@@ -41,12 +41,14 @@ namespace WebApi
             //services.AddScoped<IRepository<Course>, CourseRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddScoped<ISectionRepository, SectionRepository>();
-            services.AddScoped<ISkillRepository, SkillRepository>();
+            services.AddScoped<ISubSectionRepository, SubSectionRepository>();
+            services.AddScoped<IExerciseMultipeChoiseRepository, ExerciseMultipeChoiseRepository>();
 
             // BusinessLogic interfaces
             services.AddScoped<ICourseLogic, CourseLogic>();
             services.AddScoped<ISectionLogic, SectionLogic>();
-            services.AddScoped<ISkillLogic, SkillLogic>();
+            services.AddScoped<ISubSectionLogic, SubSectionLogic>();
+            services.AddScoped<IExerciseMultipeChoiseLogic, ExerciseMultipeChoiseLogic>();
 
             services.AddSingleton<IConfiguration>(Configuration);
 

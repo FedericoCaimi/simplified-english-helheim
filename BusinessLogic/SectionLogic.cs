@@ -7,26 +7,26 @@ using System.Collections.Generic;
 
 namespace BusinessLogic
 {
-    public class SkillLogic : ISkillLogic
+    public class SectionLogic : ISectionLogic
     {
-        private ISkillRepository Repository;
-        public SkillLogic(ISkillRepository repository)
+        private ISectionRepository Repository;
+        public SectionLogic(ISectionRepository repository)
         {
             this.Repository = repository;
         }
 
-        public Skill Create(Skill skill)
+        public Section Create(Section section)
         {
-            bool exists = Repository.Exists(skill.Name);
+            bool exists = Repository.Exists(section.Name);
             if(!exists){
-                Skill newSkill = new Skill()
+                Section newSection = new Section()
                 {
-                    Name = skill.Name,
-                    Description = skill.Description
+                    Name = section.Name,
+                    Description = section.Description
                 };
-                Repository.Add(newSkill);
+                Repository.Add(newSection);
                 Repository.Save();
-                return newSkill;
+                return newSection;
             }
             else{
                 throw new DBNamelreadyExistsException();
@@ -35,31 +35,35 @@ namespace BusinessLogic
 
         public void Remove(int id)
         {
-            Skill skillFinded = Repository.Get(id);
-            Repository.Remove(skillFinded);
+            Section sectionFinded = Repository.Get(id);
+            Repository.Remove(sectionFinded);
             Repository.Save();
         }
 
-        public Skill Update(int id, Skill skill)
+        public Section Update(int id, Section section)
         {
-            if (id != skill.Id) throw new IncorrectParamException("Id and object id doesnt match");
+            if (id != section.Id) throw new IncorrectParamException("Id and object id doesnt match");
 
-            Skill skillToUpdate = this.Repository.Get(id);
+            Section sectionToUpdate = this.Repository.Get(id);
 
-            skillToUpdate.Name = skill.Name;
-            skillToUpdate.Description = skill.Description;
+            sectionToUpdate.Name = section.Name;
+            sectionToUpdate.Description = section.Description;
 
-            Repository.Update(skillToUpdate);
+            Repository.Update(sectionToUpdate);
             Repository.Save();
-            return skill;
+            return section;
         }
 
-        public Skill Get(int id)
+        public Section Get(int id)
         {
             return Repository.Get(id);
         }
 
-        public IEnumerable<Skill> GetAll() => Repository.GetAll();
+        public IEnumerable<Section> GetAll() => Repository.GetAll();
+
+        public bool Exists(string name){
+            return Repository.Exists(name);
+        }
 
     }
 }

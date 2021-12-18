@@ -3,14 +3,16 @@ using System;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20211210162946_Simplified_1.0")]
+    partial class Simplified_10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,8 +51,8 @@ namespace DataAccess.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<bool>("Optional")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<int?>("SectionId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("SubSectionId")
                         .HasColumnType("int");
@@ -64,6 +66,8 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
+
+                    b.HasIndex("SectionId");
 
                     b.HasIndex("SubSectionId");
 
@@ -152,12 +156,7 @@ namespace DataAccess.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int?>("SectionId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SectionId");
 
                     b.ToTable("SubSection");
                 });
@@ -175,11 +174,17 @@ namespace DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("CourseId");
 
+                    b.HasOne("Domain.Section", "Section")
+                        .WithMany()
+                        .HasForeignKey("SectionId");
+
                     b.HasOne("Domain.SubSection", "SubSection")
                         .WithMany()
                         .HasForeignKey("SubSectionId");
 
                     b.Navigation("Course");
+
+                    b.Navigation("Section");
 
                     b.Navigation("SubSection");
                 });
@@ -196,15 +201,6 @@ namespace DataAccess.Migrations
                     b.HasOne("Domain.ExerciseMultipeChoise", null)
                         .WithMany("Questions")
                         .HasForeignKey("ExerciseMultipeChoiseId");
-                });
-
-            modelBuilder.Entity("Domain.SubSection", b =>
-                {
-                    b.HasOne("Domain.Section", "Section")
-                        .WithMany()
-                        .HasForeignKey("SectionId");
-
-                    b.Navigation("Section");
                 });
 
             modelBuilder.Entity("Domain.ExerciseMultipeChoise", b =>

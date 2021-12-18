@@ -13,13 +13,13 @@ using Exceptions;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("skill")]
-    public class SkillController : ControllerBase
+    [Route("exercisemc")]
+    public class ExerciseMultipleChoiseController : ControllerBase
     {
-        private ISkillLogic LogicService;
-        public SkillController(ISkillLogic skill) : base()
+        private IExerciseMultipeChoiseLogic LogicService;
+        public ExerciseMultipleChoiseController(IExerciseMultipeChoiseLogic exercise) : base()
         {
-            this.LogicService = skill;
+            this.LogicService = exercise;
         }
 
         //[ServiceFilter(typeof(AuthenticationFilter))]
@@ -30,9 +30,9 @@ namespace WebApi.Controllers
         {
             try
             {
-                List<Skill> skillList = this.LogicService.GetAll().ToList(); ;
-                List<SkillOut> skillListOut = skillList.ConvertAll(a => new SkillOut(a));
-                return Ok(skillListOut);
+                List<ExerciseMultipeChoise> exercisesList = this.LogicService.GetAll().ToList(); ;
+                List<ExerciseMultipleChoiseOut> exercisesListOut = exercisesList.ConvertAll(a => new ExerciseMultipleChoiseOut(a));
+                return Ok(exercisesListOut);
             }
             catch (Exception)
             {
@@ -44,22 +44,22 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Post([FromBody] SkillIn skillIn)
+        public IActionResult Post([FromBody] ExerciseMultipleChoiseIn exerciseIn)
         {
             //Course createdCourse = this.LogicService.Create(courseIn.ToEntity());
             //return CreatedAtRoute("GetCourse", new { id = createdCourse.Id }, createdCourse.Id);
             try
             {
-                Skill createdSkill = this.LogicService.Create(skillIn.ToEntity());
-                return Created("GetSkill", new SkillOut(createdSkill));
+                ExerciseMultipeChoise createdExercise = this.LogicService.Create(exerciseIn.ToEntity());
+                return Created("GetExerciseMultipleChoise", new ExerciseMultipleChoiseOut(createdExercise));
             }
             catch (BadArgumentException e)
             {
-                return BadRequest(e.Message);
+                return BadRequest( new{message = e.Message} );
             }
             catch (AlreadyExistsException e)
             {
-                return Conflict(e.Message);
+                return Conflict( new{message = e.Message} );
             }
             catch (Exception)
             {
@@ -72,21 +72,21 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Put([FromQuery(Name = "id")] int id, [FromBody] SkillIn skillIn)
+        public IActionResult Put([FromQuery(Name = "id")] int id, [FromBody] ExerciseMultipleChoiseIn exerciseIn)
 
         {
             try
             {
-                skillIn.Id = id;
-                return Ok(new SkillOut(this.LogicService.Update(id, skillIn.ToEntity())));
+                exerciseIn.Id = id;
+                return Ok(new ExerciseMultipleChoiseOut(this.LogicService.Update(id, exerciseIn.ToEntity())));
             }
             catch (BadArgumentException e)
             {
-                return BadRequest(e.Message);
+                return BadRequest( new{message = e.Message} );
             }
             catch (NotFoundException e)
             {
-                return NotFound(e.Message);
+                return NotFound( new{message = e.Message} );
             }
             catch (Exception)
             {
@@ -108,11 +108,11 @@ namespace WebApi.Controllers
             }
             catch (BadArgumentException e)
             {
-                return BadRequest(e.Message);
+                return BadRequest( new{message = e.Message} );
             }
             catch (NotFoundException e)
             {
-                return NotFound(e.Message);
+                return NotFound( new{message = e.Message} );
             }
             catch (Exception)
             {

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20211113121505_Simplified_1.0")]
-    partial class Simplified_10
+    [Migration("20211218192720_Simplified_1.1")]
+    partial class Simplified_11
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,10 +51,10 @@ namespace DataAccess.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int?>("SectionId")
-                        .HasColumnType("int");
+                    b.Property<bool>("Optional")
+                        .HasColumnType("tinyint(1)");
 
-                    b.Property<int?>("SkillId")
+                    b.Property<int?>("SubSectionId")
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
@@ -67,9 +67,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("SectionId");
-
-                    b.HasIndex("SkillId");
+                    b.HasIndex("SubSectionId");
 
                     b.ToTable("Exercise");
                 });
@@ -105,7 +103,7 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("ExerciseMulipeChoiseId")
+                    b.Property<int?>("ExerciseMultipeChoiseId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
@@ -116,7 +114,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExerciseMulipeChoiseId");
+                    b.HasIndex("ExerciseMultipeChoiseId");
 
                     b.ToTable("Question");
                 });
@@ -141,7 +139,7 @@ namespace DataAccess.Migrations
                     b.ToTable("Section");
                 });
 
-            modelBuilder.Entity("Domain.Skill", b =>
+            modelBuilder.Entity("Domain.SubSection", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -156,16 +154,21 @@ namespace DataAccess.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<int?>("SectionId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Skill");
+                    b.HasIndex("SectionId");
+
+                    b.ToTable("SubSection");
                 });
 
-            modelBuilder.Entity("Domain.ExerciseMulipeChoise", b =>
+            modelBuilder.Entity("Domain.ExerciseMultipeChoise", b =>
                 {
                     b.HasBaseType("Domain.Exercise");
 
-                    b.ToTable("ExerciseMulipeChoise");
+                    b.ToTable("ExerciseMultipeChoise");
                 });
 
             modelBuilder.Entity("Domain.Exercise", b =>
@@ -174,19 +177,13 @@ namespace DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("CourseId");
 
-                    b.HasOne("Domain.Section", "Section")
+                    b.HasOne("Domain.SubSection", "SubSection")
                         .WithMany()
-                        .HasForeignKey("SectionId");
-
-                    b.HasOne("Domain.Skill", "Skill")
-                        .WithMany()
-                        .HasForeignKey("SkillId");
+                        .HasForeignKey("SubSectionId");
 
                     b.Navigation("Course");
 
-                    b.Navigation("Section");
-
-                    b.Navigation("Skill");
+                    b.Navigation("SubSection");
                 });
 
             modelBuilder.Entity("Domain.Option", b =>
@@ -198,16 +195,25 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.Question", b =>
                 {
-                    b.HasOne("Domain.ExerciseMulipeChoise", null)
-                        .WithMany("Question")
-                        .HasForeignKey("ExerciseMulipeChoiseId");
+                    b.HasOne("Domain.ExerciseMultipeChoise", null)
+                        .WithMany("Questions")
+                        .HasForeignKey("ExerciseMultipeChoiseId");
                 });
 
-            modelBuilder.Entity("Domain.ExerciseMulipeChoise", b =>
+            modelBuilder.Entity("Domain.SubSection", b =>
+                {
+                    b.HasOne("Domain.Section", "Section")
+                        .WithMany()
+                        .HasForeignKey("SectionId");
+
+                    b.Navigation("Section");
+                });
+
+            modelBuilder.Entity("Domain.ExerciseMultipeChoise", b =>
                 {
                     b.HasOne("Domain.Exercise", null)
                         .WithOne()
-                        .HasForeignKey("Domain.ExerciseMulipeChoise", "Id")
+                        .HasForeignKey("Domain.ExerciseMultipeChoise", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -217,9 +223,9 @@ namespace DataAccess.Migrations
                     b.Navigation("Option");
                 });
 
-            modelBuilder.Entity("Domain.ExerciseMulipeChoise", b =>
+            modelBuilder.Entity("Domain.ExerciseMultipeChoise", b =>
                 {
-                    b.Navigation("Question");
+                    b.Navigation("Questions");
                 });
 #pragma warning restore 612, 618
         }

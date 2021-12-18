@@ -38,7 +38,7 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Skill",
+                name: "SubSection",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -49,7 +49,7 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Skill", x => x.Id);
+                    table.PrimaryKey("PK_SubSection", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,7 +60,7 @@ namespace DataAccess.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CourseId = table.Column<int>(type: "int", nullable: true),
                     SectionId = table.Column<int>(type: "int", nullable: true),
-                    SkillId = table.Column<int>(type: "int", nullable: true),
+                    SubSectionId = table.Column<int>(type: "int", nullable: true),
                     Title = table.Column<string>(type: "text", nullable: true),
                     Text = table.Column<string>(type: "text", nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
@@ -81,15 +81,15 @@ namespace DataAccess.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Exercise_Skill_SkillId",
-                        column: x => x.SkillId,
-                        principalTable: "Skill",
+                        name: "FK_Exercise_SubSection_SubSectionId",
+                        column: x => x.SubSectionId,
+                        principalTable: "SubSection",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExerciseMulipeChoise",
+                name: "ExerciseMultipeChoise",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -97,9 +97,9 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExerciseMulipeChoise", x => x.Id);
+                    table.PrimaryKey("PK_ExerciseMultipeChoise", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ExerciseMulipeChoise_Exercise_Id",
+                        name: "FK_ExerciseMultipeChoise_Exercise_Id",
                         column: x => x.Id,
                         principalTable: "Exercise",
                         principalColumn: "Id",
@@ -113,16 +113,16 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Text = table.Column<string>(type: "text", nullable: true),
-                    ExerciseMulipeChoiseId = table.Column<int>(type: "int", nullable: true),
+                    ExerciseMultipeChoiseId = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Question", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Question_ExerciseMulipeChoise_ExerciseMulipeChoiseId",
-                        column: x => x.ExerciseMulipeChoiseId,
-                        principalTable: "ExerciseMulipeChoise",
+                        name: "FK_Question_ExerciseMultipeChoise_ExerciseMultipeChoiseId",
+                        column: x => x.ExerciseMultipeChoiseId,
+                        principalTable: "ExerciseMultipeChoise",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -160,9 +160,9 @@ namespace DataAccess.Migrations
                 column: "SectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Exercise_SkillId",
+                name: "IX_Exercise_SubSectionId",
                 table: "Exercise",
-                column: "SkillId");
+                column: "SubSectionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Option_QuestionId",
@@ -170,9 +170,9 @@ namespace DataAccess.Migrations
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Question_ExerciseMulipeChoiseId",
+                name: "IX_Question_ExerciseMultipeChoiseId",
                 table: "Question",
-                column: "ExerciseMulipeChoiseId");
+                column: "ExerciseMultipeChoiseId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -184,7 +184,7 @@ namespace DataAccess.Migrations
                 name: "Question");
 
             migrationBuilder.DropTable(
-                name: "ExerciseMulipeChoise");
+                name: "ExerciseMultipeChoise");
 
             migrationBuilder.DropTable(
                 name: "Exercise");
@@ -196,7 +196,7 @@ namespace DataAccess.Migrations
                 name: "Section");
 
             migrationBuilder.DropTable(
-                name: "Skill");
+                name: "SubSection");
         }
     }
 }

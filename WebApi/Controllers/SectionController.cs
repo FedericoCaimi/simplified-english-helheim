@@ -55,11 +55,11 @@ namespace WebApi.Controllers
             }
             catch (BadArgumentException e)
             {
-                return BadRequest(e.Message);
+                return BadRequest( new{message = e.Message} );
             }
             catch (AlreadyExistsException e)
             {
-                return Conflict(e.Message);
+                return Conflict( new{message = e.Message} );
             }
             catch (Exception)
             {
@@ -82,11 +82,11 @@ namespace WebApi.Controllers
             }
             catch (BadArgumentException e)
             {
-                return BadRequest(e.Message);
+                return BadRequest( new{message = e.Message} );
             }
             catch (NotFoundException e)
             {
-                return NotFound(e.Message);
+                return NotFound( new{message = e.Message} );
             }
             catch (Exception)
             {
@@ -108,11 +108,11 @@ namespace WebApi.Controllers
             }
             catch (BadArgumentException e)
             {
-                return BadRequest(e.Message);
+                return BadRequest( new{message = e.Message} );
             }
             catch (NotFoundException e)
             {
-                return NotFound(e.Message);
+                return NotFound( new{message = e.Message} );
             }
             catch (Exception)
             {
