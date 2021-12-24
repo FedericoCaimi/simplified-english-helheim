@@ -3,9 +3,9 @@ using System;
 namespace Exceptions
 {
     [Serializable]
-    public class DBUsernameNotFoundException : NotFoundException
+    public class DBNameNotFoundException : NotFoundException
     {
-        public DBUsernameNotFoundException()
-        : base(String.Format("Username not found")) { }
+        public DBNameNotFoundException()
+        : base(String.Format("Name not found")) { }
     }
 }

@@ -2,27 +2,26 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogic.Interface;
-//sing DataAccess.Interface;
 using Domain;
 using Microsoft.AspNetCore.Http;
+using WebApi.Filters;
 using System.Linq;
 using WebApi.Models;
 using Exceptions;
-//using WebApi.Filters;
 
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("subSection")]
-    public class SubSectionController : ControllerBase
+    [Route("authentication")]
+    public class AuthenticationController : ControllerBase
     {
-        private ISubSectionLogic LogicService;
-        public SubSectionController(ISubSectionLogic subSection) : base()
+        private IAuthenticationLogic LogicService;
+        public AuthenticationController(IAuthenticationLogic service) : base()
         {
-            this.LogicService = subSection;
+            this.LogicService = service;
         }
 
-        //[ServiceFilter(typeof(AuthenticationFilter))]
+        [ServiceFilter(typeof(AuthenticationFilter))]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -30,9 +29,36 @@ namespace WebApi.Controllers
         {
             try
             {
-                List<SubSection> subSectionList = this.LogicService.GetAll().ToList(); ;
-                List<SubSectionOut> subSectionListOut = subSectionList.ConvertAll(a => new SubSectionOut(a));
-                return Ok(subSectionListOut);
+                List<Session> listSessions = this.LogicService.GetAll().ToList(); ;
+                List<AuthenticationOut> listSessionsOut = listSessions.ConvertAll(a => new AuthenticationOut(a));
+                return Ok(listSessionsOut);
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [HttpGet("{id}", Name = "GetSession")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetById(Guid id)
+        {
+            try
+            {
+                return Ok(new AuthenticationOut(this.LogicService.Get(id)));
+            }
+            catch (BadArgumentException e)
+            {
+                return BadRequest(new{message = e.Message});
+            }
+            catch (NotFoundException e)
+            {
+                return NotFound(new{message = e.Message});
             }
             catch (Exception)
             {
@@ -43,78 +69,53 @@ namespace WebApi.Controllers
         [HttpPost()]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Post([FromBody] SubSectionIn subSectionIn)
+        public IActionResult Post([FromBody] AuthenticationIn user)
         {
             try
             {
-                SubSection createdSubSection = this.LogicService.Create(subSectionIn.ToEntity());
-                return Created("GetSubSection", new SubSectionOut(createdSubSection));
+                Session createdSession = this.LogicService.Login(user.ToEntity());
+                return CreatedAtRoute("GetSession", new { id = createdSession.Id }, new AuthenticationOut(createdSession));
             }
             catch (BadArgumentException e)
             {
-                return BadRequest( new{message = e.Message});
-            }
-            catch (AlreadyExistsException e)
-            {
-                return Conflict(new{message = e.Message});
+                return BadRequest(new{message = e.Message});
             }
             catch (NotFoundException e)
             {
-                return NotFound( new{message = e.Message} );
+                return NotFound(new{message = e.Message});
+            }
+            catch (BadLoginException e)
+            {
+                return BadRequest(new{message = e.Message});
             }
             catch (Exception)
             {
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
+
         }
 
-        [HttpPut]
+        [HttpDelete("{token}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Put([FromQuery(Name = "id")] int id, [FromBody] SubSectionIn subSectionIn)
-
+        public IActionResult Delete(Guid token)
         {
             try
             {
-                subSectionIn.Id = id;
-                return Ok(new SubSectionOut(this.LogicService.Update(id, subSectionIn.ToEntity())));
+                this.LogicService.Logout(token);
+                return Ok(token);
             }
             catch (BadArgumentException e)
             {
-                return BadRequest( new{message = e.Message} );
+                return BadRequest(new{message = e.Message});
             }
             catch (NotFoundException e)
             {
-                return NotFound( new{message = e.Message});
-            }
-            catch (Exception)
-            {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-            }
-        }
-
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Delete(int id)
-        {
-            try
-            {
-                this.LogicService.Remove(id);
-                return Ok(id);
-            }
-            catch (BadArgumentException e)
-            {
-                return BadRequest( new{message = e.Message} );
-            }
-            catch (NotFoundException e)
-            {
-                return NotFound( new{message = e.Message} );
+                return NotFound(new{message = e.Message});
             }
             catch (Exception)
             {

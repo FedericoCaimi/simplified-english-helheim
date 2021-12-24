@@ -7,9 +7,9 @@ using DataAccess.Interface;
 using BusinessLogic;
 using BusinessLogic.Interface;
 using DataAccess;
-using Domain;
 using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Filters;
 
 namespace WebApi
 {
@@ -38,17 +38,23 @@ namespace WebApi
             );
 
             // DataAccess interfaces
-            //services.AddScoped<IRepository<Course>, CourseRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddScoped<ISectionRepository, SectionRepository>();
             services.AddScoped<ISubSectionRepository, SubSectionRepository>();
             services.AddScoped<IExerciseMultipeChoiseRepository, ExerciseMultipeChoiseRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ISessionRepository, SessionRepository>();
 
             // BusinessLogic interfaces
             services.AddScoped<ICourseLogic, CourseLogic>();
             services.AddScoped<ISectionLogic, SectionLogic>();
             services.AddScoped<ISubSectionLogic, SubSectionLogic>();
             services.AddScoped<IExerciseMultipeChoiseLogic, ExerciseMultipeChoiseLogic>();
+            services.AddScoped<IUserLogic, UserLogic>();
+            services.AddScoped<IAuthenticationLogic, AuthenticationLogic>();
+
+            // Auth service
+            services.AddScoped<AuthenticationFilter>();
 
             services.AddSingleton<IConfiguration>(Configuration);
 

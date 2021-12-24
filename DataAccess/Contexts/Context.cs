@@ -16,6 +16,8 @@ namespace DataAccess
         public DbSet<ExerciseMultipeChoise> ExerciseMultipeChoise { get; set; }
         public DbSet<Question> Question { get; set; }
         public DbSet<Option> Option { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<Session> Sessions { get; set; }
 
         public Context(DbContextOptions options) : base(options) { }
     }
