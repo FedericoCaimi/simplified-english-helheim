@@ -6,12 +6,12 @@ using Exceptions;
 
 namespace WebApi.Filters
 {
-    public class AuthenticationFilter : Attribute, IAuthorizationFilter
+    public class AuthenticationAdminFilter : Attribute, IAuthorizationFilter
     {
         IAuthenticationLogic AuthenticationLogic;
-        public AuthenticationFilter(IAuthenticationLogic authenticationLogic)
+        public AuthenticationAdminFilter(IAuthenticationLogic authenticationLogic)
         {
-            this.AuthenticationLogic = authenticationLogic; 
+            this.AuthenticationLogic = authenticationLogic;
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
@@ -28,7 +28,7 @@ namespace WebApi.Filters
                 try
                 {
                     Guid guidToken = Guid.Parse(token);
-                    if (!this.AuthenticationLogic.IsLoggedIn(guidToken))
+                    if (!this.AuthenticationLogic.IsLoggedInAndAuthorized(guidToken, "Admin"))
                     {
                         JsonResult json = new JsonResult(new { message = "User not authorized to use the service, try to login first" });
                         json.StatusCode = 401;
@@ -36,6 +36,12 @@ namespace WebApi.Filters
                     }
                 }
                 catch (BadLoginException)
+                {
+                    JsonResult json = new JsonResult(new { message = "User not authorized to use the service, try to login first" });
+                    json.StatusCode = 401;
+                    context.Result = json;
+                }
+                catch (DBKeyNotFoundException)
                 {
                     JsonResult json = new JsonResult(new { message = "User not authorized to use the service, try to login first" });
                     json.StatusCode = 401;

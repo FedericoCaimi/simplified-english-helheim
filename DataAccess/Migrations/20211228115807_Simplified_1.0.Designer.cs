@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20211224032546_Simplified_2.2")]
-    partial class Simplified_22
+    [Migration("20211228115807_Simplified_1.0")]
+    partial class Simplified_10
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -139,6 +139,26 @@ namespace DataAccess.Migrations
                     b.ToTable("Section");
                 });
 
+            modelBuilder.Entity("Domain.Session", b =>
+                {
+                    b.Property<byte[]>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varbinary(16)");
+
+                    b.Property<DateTime>("DateLogged")
+                        .HasColumnType("datetime");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sessions");
+                });
+
             modelBuilder.Entity("Domain.SubSection", b =>
                 {
                     b.Property<int>("Id")
@@ -186,6 +206,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Phone")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Rol")
                         .HasColumnType("text");
 
                     b.HasKey("Id");

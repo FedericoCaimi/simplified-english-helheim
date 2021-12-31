@@ -21,7 +21,7 @@ namespace WebApi.Controllers
             this.LogicService = service;
         }
 
-        [ServiceFilter(typeof(AuthenticationFilter))]
+        [ServiceFilter(typeof(AuthenticationAdminFilter))]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -40,7 +40,7 @@ namespace WebApi.Controllers
         }
 
 
-        [ServiceFilter(typeof(AuthenticationFilter))]
+        [ServiceFilter(typeof(AuthenticationAdminFilter))]
         [HttpGet("{id}", Name = "GetSession")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -107,7 +107,7 @@ namespace WebApi.Controllers
             try
             {
                 this.LogicService.Logout(token);
-                return Ok(token);
+                return Ok(new{message = "log out "+token});
             }
             catch (BadArgumentException e)
             {

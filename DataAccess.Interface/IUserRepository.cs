@@ -6,5 +6,6 @@ namespace DataAccess.Interface
     {
         User GetByEmail(string mail);
         User GetByName(string Name);
+        bool existsEmail(string email);
     }
 }

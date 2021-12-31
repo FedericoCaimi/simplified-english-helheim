@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using System.Linq;
 using WebApi.Models;
 using Exceptions;
-//using WebApi.Filters;
+using WebApi.Filters;
 
 namespace WebApi.Controllers
 {
@@ -22,7 +22,7 @@ namespace WebApi.Controllers
             this.LogicService = subSection;
         }
 
-        //[ServiceFilter(typeof(AuthenticationFilter))]
+        [ServiceFilter(typeof(AuthenticationFilter))]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -40,6 +40,7 @@ namespace WebApi.Controllers
             }
         }
 
+        [ServiceFilter(typeof(AuthenticationAdminFilter))]
         [HttpPost()]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -69,13 +70,13 @@ namespace WebApi.Controllers
             }
         }
 
+        [ServiceFilter(typeof(AuthenticationAdminFilter))]
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Put([FromQuery(Name = "id")] int id, [FromBody] SubSectionIn subSectionIn)
-
         {
             try
             {
@@ -96,6 +97,7 @@ namespace WebApi.Controllers
             }
         }
 
+        [ServiceFilter(typeof(AuthenticationAdminFilter))]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

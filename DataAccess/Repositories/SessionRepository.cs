@@ -31,7 +31,9 @@ namespace DataAccess
         public void Remove(Session session)
         {
             if (!exists(session.Id)) throw new DBKeyNotFoundException();
-            Context.Set<Session>().Remove(session);
+            //Context.Set<Session>().Remove(session);
+            session.IsDeleted = true;
+            Context.Entry(session).State = EntityState.Modified;
         }
 
         public void Update(Session entity)

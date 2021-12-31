@@ -11,6 +11,7 @@ namespace WebApi.Models
         public string Email { get; set; }
         public string Phone { get; set; }
         public Course Course { get; set; }
+        public string Rol { get; set; }
         public bool IsDeleted { get; set; }
 
         public UserOut(User user)
@@ -20,6 +21,7 @@ namespace WebApi.Models
             Email = user.Email;
             Phone = user.Phone;
             Course = user.Course;
+            Rol = user.Rol;
             IsDeleted = user.IsDeleted;
         }
 

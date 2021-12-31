@@ -23,9 +23,9 @@ namespace DataAccess
         public virtual void Remove(T entity)
         {
             if (!exists(entity.Id)) throw new DBKeyNotFoundException();
-            Context.Set<T>().Remove(entity);
-            //entity.IsDeleted = true;
-            //Context.Entry(entity).State = EntityState.Modified;
+            //Context.Set<T>().Remove(entity);
+            entity.IsDeleted = true;
+            Context.Entry(entity).State = EntityState.Modified;
         }
 
         public virtual void Update(T entity)

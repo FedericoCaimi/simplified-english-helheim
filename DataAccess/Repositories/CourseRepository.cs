@@ -25,8 +25,6 @@ namespace DataAccess.Repositories
         
         public bool Exists(string name)
         {
-            var element = Context.Set<Course>().FirstOrDefaultAsync(x => x.Name == name);
-
             return Context.Set<Course>().FirstOrDefaultAsync(x => x.Name == name).Result != null;
         }
     }

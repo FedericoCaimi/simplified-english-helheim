@@ -18,11 +18,16 @@ namespace BusinessLogic
 
         public User Create(User user)
         {
+            if(Repository.existsEmail(user.Email)){
+                throw new UserAlreadyExistsException();
+            }
             User newUser = new User()
             {
                 Name = user.Name,
                 Password = user.Password,
                 Email = user.Email,
+                Course = user.Course,
+                Rol = user.Rol,
                 Phone = user.Phone,
             };
             Repository.Add(newUser);

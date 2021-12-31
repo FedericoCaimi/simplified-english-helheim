@@ -55,6 +55,7 @@ namespace WebApi
 
             // Auth service
             services.AddScoped<AuthenticationFilter>();
+            services.AddScoped<AuthenticationAdminFilter>();
 
             services.AddSingleton<IConfiguration>(Configuration);
 

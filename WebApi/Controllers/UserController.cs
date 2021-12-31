@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using System.Linq;
 using WebApi.Models;
 using Exceptions;
-//using WebApi.Filters;
+using WebApi.Filters;
 
 namespace WebApi.Controllers
 {
@@ -22,7 +22,7 @@ namespace WebApi.Controllers
             this.LogicService = service;
         }
 
-        //[ServiceFilter(typeof(AuthenticationFilter))]
+        [ServiceFilter(typeof(AuthenticationAdminFilter))]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -40,7 +40,7 @@ namespace WebApi.Controllers
             }
         }
 
-        //[ServiceFilter(typeof(AuthenticationFilter))]
+        [ServiceFilter(typeof(AuthenticationAdminFilter))]
         [HttpGet("{id}", Name = "GetUser")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -66,7 +66,7 @@ namespace WebApi.Controllers
             }
         }
 
-        //[ServiceFilter(typeof(AuthenticationFilter))]
+        [ServiceFilter(typeof(AuthenticationAdminFilter))]
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -94,6 +94,7 @@ namespace WebApi.Controllers
             }
         }
 
+        [ServiceFilter(typeof(AuthenticationAdminFilter))]
         [HttpPost()]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -103,7 +104,11 @@ namespace WebApi.Controllers
             try
             {
                 User createdUser = this.LogicService.Create(userIn.ToEntity());
-                return CreatedAtRoute("GetUser", new { id = createdUser.Id }, createdUser.Id);
+                return CreatedAtRoute("GetUser", new { id = createdUser.Id }, createdUser);
+            }
+            catch (AlreadyExistsException e)
+            {
+                return Conflict( new{message = e.Message} );
             }
             catch (BadArgumentException e)
             {
@@ -116,7 +121,7 @@ namespace WebApi.Controllers
 
         }
 
-        //[ServiceFilter(typeof(AuthenticationFilter))]
+        [ServiceFilter(typeof(AuthenticationAdminFilter))]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

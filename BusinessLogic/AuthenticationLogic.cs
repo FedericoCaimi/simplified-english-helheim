@@ -1,3 +1,4 @@
+using System.Collections;
 using System;
 using System.Collections.Generic;
 using Domain;
@@ -76,8 +77,28 @@ namespace BusinessLogic
         {
             var session = SessionRepository.Get(token);
             var loggedOutToken = session.IsDeleted;
-            var dueDate = session.DateLogged.AddHours(24);
+            var dueDate = session.DateLogged.AddHours(6);
             var validToken = DateTime.Now < dueDate;
+            return !loggedOutToken && validToken;
+        }
+
+        public bool IsAuthorized(Guid token, List<string> rols)
+        {
+            var session = SessionRepository.Get(token);
+            var user = UserRepository.Get(session.UserId);
+            return rols.Contains(user.Rol);
+        }
+
+        public bool IsLoggedInAndAuthorized(Guid token, string rol)
+        {
+            var session = SessionRepository.Get(token);
+            var loggedOutToken = session.IsDeleted;
+            var dueDate = session.DateLogged.AddHours(6);
+            var validToken = DateTime.Now < dueDate;
+            if(!loggedOutToken && validToken){
+                var user = UserRepository.Get(session.UserId);
+                return rol == user.Rol;
+            }
             return !loggedOutToken && validToken;
         }
     }

@@ -8,6 +8,7 @@ namespace Domain
         public string Password { get; set; }
         public string Phone { get; set; }
         public Course Course { get; set; }
+        public string Rol { get; set; }
 
         public override bool Equals(object obj)
         {

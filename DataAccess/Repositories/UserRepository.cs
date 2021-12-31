@@ -18,15 +18,16 @@ namespace DataAccess
             if (!existsEmail(mail)) throw new DBIncorrectLoginException();
             return Context.Set<User>().FirstOrDefault(x => x.Email == mail);
         }
-        private bool existsEmail(string mail)
-        {
-            return Context.Set<User>().FirstOrDefault(x => x.Email == mail) != null;
-        }
         public User GetByName(string name)
         {
             if (!existsName(name)) throw new DBNameNotFoundException();
             return Context.Set<User>().FirstOrDefault(x => x.Name == name);
         }
+        public bool existsEmail(string mail)
+        {
+            return Context.Set<User>().FirstOrDefault(x => x.Email == mail) != null;
+        }
+        
         private bool existsName(string name)
         {
             return Context.Set<User>().FirstOrDefault(x => x.Name == name) != null;

@@ -10,6 +10,7 @@ namespace WebApi.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public string Phone { get; set; }
+        public string Rol { get; set; }
         public bool IsDeleted { get; set; }
 
         public UserIn()
@@ -23,6 +24,7 @@ namespace WebApi.Models
             Email = this.Email,
             Password = this.Password,
             Phone = this.Phone,
+            Rol = this.Rol,
             IsDeleted = this.IsDeleted,
         };
 

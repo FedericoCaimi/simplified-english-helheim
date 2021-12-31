@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using MySql.EntityFrameworkCore.Metadata;
 
 namespace DataAccess.Migrations
@@ -38,6 +39,45 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Sessions",
+                columns: table => new
+                {
+                    Id = table.Column<byte[]>(type: "varbinary(16)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    DateLogged = table.Column<DateTime>(type: "datetime", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sessions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true),
+                    Password = table.Column<string>(type: "text", nullable: true),
+                    Phone = table.Column<string>(type: "text", nullable: true),
+                    CourseId = table.Column<int>(type: "int", nullable: true),
+                    Rol = table.Column<string>(type: "text", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_User_Course_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Course",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SubSection",
                 columns: table => new
                 {
@@ -45,11 +85,18 @@ namespace DataAccess.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
+                    SectionId = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SubSection", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SubSection_Section_SectionId",
+                        column: x => x.SectionId,
+                        principalTable: "Section",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -59,10 +106,10 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CourseId = table.Column<int>(type: "int", nullable: true),
-                    SectionId = table.Column<int>(type: "int", nullable: true),
                     SubSectionId = table.Column<int>(type: "int", nullable: true),
                     Title = table.Column<string>(type: "text", nullable: true),
                     Text = table.Column<string>(type: "text", nullable: true),
+                    Optional = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
@@ -72,12 +119,6 @@ namespace DataAccess.Migrations
                         name: "FK_Exercise_Course_CourseId",
                         column: x => x.CourseId,
                         principalTable: "Course",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Exercise_Section_SectionId",
-                        column: x => x.SectionId,
-                        principalTable: "Section",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -155,11 +196,6 @@ namespace DataAccess.Migrations
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Exercise_SectionId",
-                table: "Exercise",
-                column: "SectionId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Exercise_SubSectionId",
                 table: "Exercise",
                 column: "SubSectionId");
@@ -173,12 +209,28 @@ namespace DataAccess.Migrations
                 name: "IX_Question_ExerciseMultipeChoiseId",
                 table: "Question",
                 column: "ExerciseMultipeChoiseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubSection_SectionId",
+                table: "SubSection",
+                column: "SectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_CourseId",
+                table: "User",
+                column: "CourseId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Option");
+
+            migrationBuilder.DropTable(
+                name: "Sessions");
+
+            migrationBuilder.DropTable(
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "Question");
@@ -193,10 +245,10 @@ namespace DataAccess.Migrations
                 name: "Course");
 
             migrationBuilder.DropTable(
-                name: "Section");
+                name: "SubSection");
 
             migrationBuilder.DropTable(
-                name: "SubSection");
+                name: "Section");
         }
     }
 }
